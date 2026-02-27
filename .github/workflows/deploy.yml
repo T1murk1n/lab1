@@ -6,15 +6,16 @@ on:
 
 jobs:
   test-and-deploy:
-    runs-on: self-hosted   # используем наш локальный раннер
+    runs-on: self-hosted
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-            - name: Run tests
+      - name: Run tests
         shell: powershell
         run: |
+          # Выполняем тестовый скрипт PowerShell
           .\test.ps1
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
@@ -22,5 +23,6 @@ jobs:
         if: success()
         shell: powershell
         run: |
+          # Копируем все файлы из репозитория в папку, примонтированную в Docker
           Copy-Item -Path * -Destination E:\webroot -Recurse -Force
           Write-Host "Deployment finished. Files copied to E:\webroot"
