@@ -1,0 +1,28 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  test-and-deploy:
+    runs-on: self-hosted   # используем наш локальный раннер
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run tests
+        shell: pwsh
+        run: |
+          # Выполняем тестовый скрипт PowerShell
+          .\test.ps1
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: Deploy to local web server (Docker volume)
+        if: success()
+        shell: pwsh
+        run: |
+          # Копируем все файлы из репозитория в папку, примонтированную в Docker
+          Copy-Item -Path * -Destination E:\webroot -Recurse -Force
+          Write-Host "Deployment finished. Files copied to E:\webroot"
