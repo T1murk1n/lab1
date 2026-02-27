@@ -1,7 +1,7 @@
 if (Test-Path "index.html") {
-    Write-Host "Тест пройден: файл index.html существует"
+    Write-Host "Test passed: index.html exists"
     exit 0
 } else {
-    Write-Host "Тест не пройден: файл index.html не найден"
+    Write-Host "Test failed: index.html not found"
     exit 1
 }
