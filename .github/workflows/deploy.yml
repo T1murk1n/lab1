@@ -12,17 +12,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Run tests
-        shell: pwsh
+            - name: Run tests
+        shell: powershell
         run: |
-          # Выполняем тестовый скрипт PowerShell
           .\test.ps1
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
       - name: Deploy to local web server (Docker volume)
         if: success()
-        shell: pwsh
+        shell: powershell
         run: |
-          # Копируем все файлы из репозитория в папку, примонтированную в Docker
           Copy-Item -Path * -Destination E:\webroot -Recurse -Force
           Write-Host "Deployment finished. Files copied to E:\webroot"
